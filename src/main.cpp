@@ -1,8 +1,3 @@
-/**
- * @file main.cpp
- * @brief Main application demonstrating the vehicle monitoring system with GPS
- */
-
 #include "VehicleMonitor.h"
 #include "MediaPlayer.h"
 #include "SystemSettings.h"
@@ -15,7 +10,8 @@
 #include <limits>
 
 void displayMenu() {
-    std::cout << "\n🚗 === VEHICLE SYSTEM MENU ===" << std::endl;
+    std::cout << "\n            VEHICLE SYSTEM MENU     \n" << std::endl;
+    std::cout << "........................................................................................................" << std::endl;
     std::cout << "1. Vehicle Monitor Status" << std::endl;
     std::cout << "2. GPS Navigator Status" << std::endl;
     std::cout << "3. Media Player Controls" << std::endl;
@@ -29,7 +25,7 @@ void displayMenu() {
 }
 
 void gpsNavigationDemo(std::shared_ptr<GPSNavigator> gps) {
-    std::cout << "\n🗺️                   GPS NAVIGATION DEMO                " << std::endl;    
+    std::cout << "\n                   GPS NAVIGATION DEMO                " << std::endl;    
     // Set current location (example: San Francisco)
     GPSCoordinate currentLoc(37.7749, -122.4194, 50.0);
     gps->updateLocation(currentLoc);
@@ -45,7 +41,6 @@ void gpsNavigationDemo(std::shared_ptr<GPSNavigator> gps) {
     gps->setDestination(destination, "Alcatraz Island");    
     // Start navigation
     gps->startNavigation();
-    std::this_thread::sleep_for(std::chrono::seconds(10));
     gps->stopNavigation();
 
     // Display status
@@ -53,7 +48,7 @@ void gpsNavigationDemo(std::shared_ptr<GPSNavigator> gps) {
     gps->displayRoute();
 }
 int main() {
-    std::cout << "       Vehicle Monitoring System with GPS Navigation" << std::endl;
+    std::cout << "          Vehicle Monitoring System with GPS Navigation" << std::endl;
     std::cout << "..........................................................................................................................................." << std::endl;    
     // Create shared notification manager
     auto notificationManager = std::make_shared<NotificationManager>();    
@@ -75,7 +70,7 @@ int main() {
         displayMenu();        
         // Input validation
         if (!(std::cin >> choice)) {
-            std::cout << "❌ Invalid input. Please enter a number." << std::endl;
+            std::cout << "   Invalid input. Please enter a number." << std::endl;
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             continue;
@@ -88,7 +83,7 @@ int main() {
                 gpsNavigator->displayGPSStatus();
                 break;                
             case 3:
-                std::cout << "\n🎵 Media Player Status:" << std::endl;
+                std::cout << "\n\tMedia Player Status:" << std::endl;
                 mediaPlayer->displayCurrentTrack();
                 mediaPlayer->displayPlaylist();
                 break;                
@@ -99,7 +94,7 @@ int main() {
                 notificationManager->displayNotifications();
                 break;                
             case 6:
-                std::cout << "\n🔄 Simulating real-time updates..." << std::endl;
+                std::cout << "\n     Simulating real-time updates..." << std::endl;
                 vehicleMonitor->simulateRealTimeUpdate();
                 gpsNavigator->simulateGPSUpdate();
                 std::cout << "Updates completed!" << std::endl;
@@ -111,10 +106,10 @@ int main() {
                 vehicleMonitor->performSystemCheck();
                 break;                
             case 0:
-                std::cout << "\n👋 Shutting down vehicle system..." << std::endl;
+                std::cout << "\n Shutting down vehicle system..." << std::endl;
                 break;                
             default:
-                std::cout << "❌ Invalid option. Please try again." << std::endl;
+                std::cout << " Invalid option. Please try again." << std::endl;
                 break;
         }        
         if (choice != 0) {

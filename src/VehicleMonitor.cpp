@@ -101,7 +101,7 @@ void VehicleMonitor::checkBrakeSystem() {
     }
 }
 void VehicleMonitor::performSystemCheck() {
-    std::cout << "\n🔍 Performing comprehensive system check..." << std::endl;    
+    std::cout << "\n\tPerforming comprehensive system check..." << std::endl;    
     checkEngineTemperature();
     checkFuelLevel();
     checkSpeed();
@@ -112,53 +112,53 @@ void VehicleMonitor::performSystemCheck() {
 }
 
 void VehicleMonitor::displayStatus() const {
-    std::cout << "\n🚗 === VEHICLE STATUS DASHBOARD ===" << std::endl;
+    std::cout << "\n\t=== VEHICLE STATUS DASHBOARD ===" << std::endl;
     std::cout << std::string(45, '=') << std::endl;    
     // Engine status
-    std::cout << "🌡️  Engine Temperature: " << std::fixed << std::setprecision(1) 
+    std::cout << "\tEngine Temperature: " << std::fixed << std::setprecision(1) 
               << engineTemperature << "°C";
     if (engineTemperature > MAX_ENGINE_TEMP) {
-        std::cout << " ⚠️  OVERHEATING!";
+        std::cout << "\tOVERHEATING!";
     } else if (engineTemperature > MAX_ENGINE_TEMP - 10.0) {
-        std::cout << " ⚠️  HIGH";
+        std::cout << "\tHIGH";
     } else {
-        std::cout << " ✅ NORMAL";
+        std::cout << "\tNORMAL";
     }
     std::cout << std::endl;    
     // Fuel status
-    std::cout << "⛽ Fuel Level: " << std::fixed << std::setprecision(1) << fuelLevel << "%";
+    std::cout << "\tFuel Level: " << std::fixed << std::setprecision(1) << fuelLevel << "%";
     if (fuelLevel <= CRITICAL_FUEL_THRESHOLD) {
-        std::cout << " 🚨 CRITICAL!";
+        std::cout << "\tCRITICAL!";
     } else if (fuelLevel <= LOW_FUEL_THRESHOLD) {
-        std::cout << " ⚠️  LOW";
+        std::cout << "\tLOW";
     } else {
-        std::cout << " ✅ OK";
+        std::cout << "\tOK";
     }
     std::cout << " (Range: ~" << std::fixed << std::setprecision(0) 
               << calculateEstimatedRange() << " km)" << std::endl;
     
     // Speed status
-    std::cout << "🏎️  Current Speed: " << std::fixed << std::setprecision(1) << currentSpeed << " km/h";
+    std::cout << "\tCurrent Speed: " << std::fixed << std::setprecision(1) << currentSpeed << " km/h";
     if (currentSpeed > MAX_SPEED_LIMIT) {
-        std::cout << " ⚠️  OVER LIMIT!";
+        std::cout << "\tOVER LIMIT!";
     } else {
-        std::cout << " ✅ OK";
+        std::cout << "\tOK";
     }
     std::cout << std::endl;
     
     // Brake status
-    std::cout << "🛑 Brake Wear: " << std::fixed << std::setprecision(1) << brakeWearLevel << "%";
+    std::cout << "\tBrake Wear: " << std::fixed << std::setprecision(1) << brakeWearLevel << "%";
     if (brakeWearLevel <= 10.0) {
-        std::cout << " 🚨 CRITICAL!";
+        std::cout << "\tCRITICAL!";
     } else if (brakeWearLevel <= MIN_BRAKE_THRESHOLD) {
-        std::cout << " ⚠️  NEEDS SERVICE";
+        std::cout << "\tNEEDS SERVICE";
     } else {
-        std::cout << " ✅ GOOD";
+        std::cout << "\tGOOD";
     }
     std::cout << std::endl;
     
     // Fuel consumption
-    std::cout << "📊 Fuel Consumption: " << std::fixed << std::setprecision(1) 
+    std::cout << "\tFuel Consumption: " << std::fixed << std::setprecision(1) 
               << fuelConsumptionRate << " L/100km" << std::endl;
     
     std::cout << std::string(45, '=') << std::endl;

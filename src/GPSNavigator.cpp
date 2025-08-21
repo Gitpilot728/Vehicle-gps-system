@@ -91,22 +91,18 @@ void GPSNavigator::startNavigation() {
        << distance << " km, ETA: " << std::fixed << std::setprecision(0) << eta << " min";
     notificationManager->addNotification(ss.str(), AlertLevel::INFO);
 }
-
 void GPSNavigator::stopNavigation() {
     status = NavigationStatus::IDLE;
     clearRoute();
     notificationManager->addNotification("Navigation stopped", AlertLevel::INFO);
 }
-
 void GPSNavigator::addWaypoint(const Waypoint& waypoint) {
     if (!waypoint.coordinate.isValid()) {
         notificationManager->addNotification("Invalid waypoint coordinates", AlertLevel::WARNING);
         return;
-    }
-    
+    }    
     route.push_back(waypoint);
-    
-    std::stringstream ss;
+        std::stringstream ss;
     ss << "Waypoint added: " << waypoint.name;
     notificationManager->addNotification(ss.str(), AlertLevel::INFO);
 }
@@ -118,8 +114,7 @@ void GPSNavigator::clearRoute() {
 double GPSNavigator::calculateDistance(const GPSCoordinate& coord1, const GPSCoordinate& coord2) const {
     if (!coord1.isValid() || !coord2.isValid()) {
         return -1.0;
-    }
-    
+    }    
     // Haversine formula
     double lat1Rad = coord1.latitude * M_PI / 180.0;
     double lat2Rad = coord2.latitude * M_PI / 180.0;
@@ -134,46 +129,36 @@ double GPSNavigator::calculateDistance(const GPSCoordinate& coord1, const GPSCoo
     
     return EARTH_RADIUS_KM * c;
 }
-
 double GPSNavigator::getDistanceToDestination() const {
     if (!destination.isValid() || !currentLocation.isValid()) {
         return -1.0;
-    }
-    
+    }    
     return calculateDistance(currentLocation, destination);
 }
-
 double GPSNavigator::getEstimatedTimeToArrival() const {
     double distance = getDistanceToDestination();
     if (distance < 0 || currentSpeed <= 0) {
         return -1.0;
-    }
-    
+    }    
     return (distance / currentSpeed) * 60.0; // Convert hours to minutes
 }
-
 void GPSNavigator::updateSpeed(double speed) {
     currentSpeed = std::max(0.0, speed);
 }
-
 void GPSNavigator::updateHeading(double heading) {
     // Normalize heading to 0-360 degrees
     while (heading < 0) heading += 360.0;
     while (heading >= 360.0) heading -= 360.0;
     currentHeading = heading;
 }
-
 void GPSNavigator::updateGPSSignal(int satellites, double acc) {
     satelliteCount = std::max(0, satellites);
     accuracy = std::max(0.0, acc);
     checkGPSSignal();
 }
-
 void GPSNavigator::checkGPSSignal() {
-    bool previousSignalStatus = gpsSignalAvailable;
-    
-    gpsSignalAvailable = (satelliteCount >= MIN_SATELLITES && accuracy <= MIN_GPS_ACCURACY);
-    
+    bool previousSignalStatus = gpsSignalAvailable;    
+    gpsSignalAvailable = (satelliteCount >= MIN_SATELLITES && accuracy <= MIN_GPS_ACCURACY);    
     if (!gpsSignalAvailable && previousSignalStatus) {
         if (status == NavigationStatus::NAVIGATING) {
             status = NavigationStatus::GPS_LOST;
@@ -186,28 +171,21 @@ void GPSNavigator::checkGPSSignal() {
         notificationManager->addNotification("GPS signal restored", AlertLevel::INFO);
     }
 }
-
 double GPSNavigator::calculateBearing(const GPSCoordinate& from, const GPSCoordinate& to) const {
     if (!from.isValid() || !to.isValid()) {
         return 0.0;
-    }
-    
+    }    
     double lat1Rad = from.latitude * M_PI / 180.0;
     double lat2Rad = to.latitude * M_PI / 180.0;
-    double deltaLonRad = (to.longitude - from.longitude) * M_PI / 180.0;
-    
+    double deltaLonRad = (to.longitude - from.longitude) * M_PI / 180.0;    
     double y = sin(deltaLonRad) * cos(lat2Rad);
-    double x = cos(lat1Rad) * sin(lat2Rad) - sin(lat1Rad) * cos(lat2Rad) * cos(deltaLonRad);
-    
-    double bearing = atan2(y, x) * 180.0 / M_PI;
-    
+    double x = cos(lat1Rad) * sin(lat2Rad) - sin(lat1Rad) * cos(lat2Rad) * cos(deltaLonRad);    
+    double bearing = atan2(y, x) * 180.0 / M_PI;    
     // Normalize to 0-360 degrees
     while (bearing < 0) bearing += 360.0;
-    while (bearing >= 360.0) bearing -= 360.0;
-    
+    while (bearing >= 360.0) bearing -= 360.0;    
     return bearing;
 }
-
 GPSCoordinate GPSNavigator::getCurrentLocation() const { return currentLocation; }
 GPSCoordinate GPSNavigator::getDestination() const { return destination; }
 NavigationStatus GPSNavigator::getNavigationStatus() const { return status; }
@@ -216,78 +194,63 @@ double GPSNavigator::getCurrentHeading() const { return currentHeading; }
 bool GPSNavigator::isGPSSignalAvailable() const { return gpsSignalAvailable; }
 int GPSNavigator::getSatelliteCount() const { return satelliteCount; }
 double GPSNavigator::getGPSAccuracy() const { return accuracy; }
-
 void GPSNavigator::displayGPSStatus() const {
-    std::cout << "\n🛰️  === GPS STATUS ===" << std::endl;
-    std::cout << std::string(35, '=') << std::endl;
-    
+    std::cout << "\n\t=== GPS STATUS ===" << std::endl;
+    std::cout << std::string(35, '=') << std::endl;    
     // Current location
-    std::cout << "📍 Current Location: " << formatCoordinate(currentLocation) << std::endl;
-    
+    std::cout << "\tCurrent Location: " << formatCoordinate(currentLocation) << std::endl;    
     // GPS signal status
-    std::cout << "📡 GPS Signal: ";
+    std::cout << "\tGPS Signal: ";
     if (gpsSignalAvailable) {
-        std::cout << "✅ GOOD";
+        std::cout << "GOOD";
     } else {
-        std::cout << "❌ POOR/LOST";
+        std::cout << "POOR/LOST";
     }
     std::cout << " (" << satelliteCount << " satellites, " 
-              << std::fixed << std::setprecision(1) << accuracy << "m accuracy)" << std::endl;
-    
+              << std::fixed << std::setprecision(1) << accuracy << "m accuracy)" << std::endl;    
     // Speed and heading
-    std::cout << "🏎️  Speed: " << std::fixed << std::setprecision(1) << currentSpeed << " km/h" << std::endl;
-    std::cout << "🧭 Heading: " << std::fixed << std::setprecision(0) << currentHeading << "°" << std::endl;
-    
+    std::cout << "\tSpeed: " << std::fixed << std::setprecision(1) << currentSpeed << " km/h" << std::endl;
+    std::cout << "\tHeading: " << std::fixed << std::setprecision(0) << currentHeading << "°" << std::endl;    
     // Navigation status
-    std::cout << "🗺️  Navigation: " << statusToString(status) << std::endl;
-    
+    std::cout << "\tNavigation: " << statusToString(status) << std::endl;    
     if (destination.isValid()) {
-        std::cout << "🎯 Destination: " << formatCoordinate(destination) << std::endl;
+        std::cout << "\tDestination: " << formatCoordinate(destination) << std::endl;
         double distance = getDistanceToDestination();
-        double eta = getEstimatedTimeToArrival();
-        
+        double eta = getEstimatedTimeToArrival();        
         if (distance >= 0) {
-            std::cout << "📏 Distance: " << std::fixed << std::setprecision(1) << distance << " km" << std::endl;
+            std::cout << "\tDistance: " << std::fixed << std::setprecision(1) << distance << " km" << std::endl;
         }
         if (eta >= 0) {
-            std::cout << "⏱️  ETA: " << std::fixed << std::setprecision(0) << eta << " minutes" << std::endl;
+            std::cout << "\tETA: " << std::fixed << std::setprecision(0) << eta << " minutes" << std::endl;
         }
-    }
-    
+    }    
     std::cout << std::string(35, '=') << std::endl;
 }
-
 void GPSNavigator::displayRoute() const {
     if (route.empty()) {
-        std::cout << "\n🗺️  No route waypoints set" << std::endl;
+        std::cout << "\n\tNo route waypoints set" << std::endl;
         return;
-    }
-    
-    std::cout << "\n🗺️  === ROUTE WAYPOINTS ===" << std::endl;
-    std::cout << std::string(40, '=') << std::endl;
-    
+    }    
+    std::cout << "\n\t=== ROUTE WAYPOINTS ===" << std::endl;
+    std::cout << std::string(40, '=') << std::endl;    
     for (size_t i = 0; i < route.size(); ++i) {
         const auto& waypoint = route[i];
         std::cout << (i + 1) << ". " << waypoint.name << std::endl;
-        std::cout << "   📍 " << formatCoordinate(waypoint.coordinate) << std::endl;
+        std::cout << "\t" << formatCoordinate(waypoint.coordinate) << std::endl;
         if (!waypoint.address.empty()) {
-            std::cout << "   🏠 " << waypoint.address << std::endl;
-        }
-        
+            std::cout << "\t" << waypoint.address << std::endl;
+        }        
         double distance = calculateDistance(currentLocation, waypoint.coordinate);
         if (distance >= 0) {
-            std::cout << "   📏 " << std::fixed << std::setprecision(1) << distance << " km away" << std::endl;
+            std::cout << "\t" << std::fixed << std::setprecision(1) << distance << " km away" << std::endl;
         }
         std::cout << std::endl;
-    }
-    
+    }    
     std::cout << std::string(40, '=') << std::endl;
 }
-
 void GPSNavigator::simulateGPSUpdate() {
     std::random_device rd;
-    std::mt19937 gen(rd());
-    
+    std::mt19937 gen(rd());    
     // Simulate small GPS coordinate changes
     std::uniform_real_distribution<> coordVar(-0.001, 0.001);
     std::uniform_real_distribution<> speedVar(-2.0, 5.0);
@@ -299,16 +262,14 @@ void GPSNavigator::simulateGPSUpdate() {
         currentLocation.latitude + coordVar(gen),
         currentLocation.longitude + coordVar(gen),
         currentLocation.altitude
-    );
-    
+    );    
     updateLocation(newLocation);
     updateSpeed(std::max(0.0, currentSpeed + speedVar(gen)));
     updateHeading(currentHeading + headingVar(gen));
     updateGPSSignal(satVar(gen), accVar(gen));
     
-    std::cout << "📡 GPS data updated..." << std::endl;
+    std::cout << "\tGPS data updated..." << std::endl;
 }
-
 std::string GPSNavigator::statusToString(NavigationStatus status) {
     switch (status) {
         case NavigationStatus::IDLE: return "IDLE";
@@ -319,7 +280,6 @@ std::string GPSNavigator::statusToString(NavigationStatus status) {
         default: return "UNKNOWN";
     }
 }
-
 std::string GPSNavigator::formatCoordinate(const GPSCoordinate& coord) {
     std::stringstream ss;
     ss << std::fixed << std::setprecision(6) << coord.latitude << ", " << coord.longitude;

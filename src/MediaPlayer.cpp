@@ -28,23 +28,23 @@ void MediaPlayer::play() {
     }
     state = PlayerState::PLAYING;
     notificationManager->addNotification("Now playing: " + playlist[currentTrackIndex].title, AlertLevel::INFO);
-    std::cout << "▶️  Playing..." << std::endl;
+    std::cout << " -> Playing..." << std::endl;
 }
 
 void MediaPlayer::pause() {
     if (state == PlayerState::PLAYING) {
         state = PlayerState::PAUSED;
-        std::cout << "⏸️  Paused" << std::endl;
+        std::cout << "  ||  Paused" << std::endl;
     } else if (state == PlayerState::PAUSED) {
         state = PlayerState::PLAYING;
-        std::cout << "▶️  Resumed" << std::endl;
+        std::cout << " ->  Resumed" << std::endl;
     }
 }
 
 void MediaPlayer::stop() {
     state = PlayerState::STOPPED;
     currentPosition = 0;
-    std::cout << "⏹️  Stopped" << std::endl;
+    std::cout << " [-] Stopped" << std::endl;
 }
 
 void MediaPlayer::nextTrack() {
@@ -56,7 +56,7 @@ void MediaPlayer::nextTrack() {
     if (state == PlayerState::PLAYING && notificationManager) {
         notificationManager->addNotification("Skipped to: " + playlist[currentTrackIndex].title, AlertLevel::INFO);
     }
-    std::cout << "⏭️  Next track" << std::endl;
+    std::cout << "\tNext track" << std::endl;
 }
 
 void MediaPlayer::previousTrack() {
@@ -66,16 +66,16 @@ void MediaPlayer::previousTrack() {
     if (state == PlayerState::PLAYING && notificationManager) {
         notificationManager->addNotification("Previous track: " + playlist[currentTrackIndex].title, AlertLevel::INFO);
     }
-    std::cout << "⏮️  Previous track" << std::endl;
+    std::cout << "\tPrevious track" << std::endl;
 }
 
 void MediaPlayer::setVolume(int vol) {
     if (vol < 0) vol = 0;
     if (vol > 100) vol = 100;
     volume = vol;
-    std::cout << "🔊 Volume set to " << volume << "%" << std::endl;
+    std::cout << "\tVolume set to " << volume << "%" << std::endl;
     if (state == PlayerState::PLAYING) {
-        std::cout << "🔊 Adjusting volume while playing..." << std::endl;
+        std::cout << "\tAdjusting volume while playing..." << std::endl;
     }
     notificationManager->addNotification("Volume set to " + std::to_string(volume) + "%", AlertLevel::INFO);
 }
@@ -87,11 +87,11 @@ PlayerState MediaPlayer::getState() const {
 }
 void MediaPlayer::displayCurrentTrack() const {
     if (playlist.empty()) {
-        std::cout << "🎵 No tracks available" << std::endl;
+        std::cout << "\tNo tracks available" << std::endl;
         return;
     }
     if (currentTrackIndex >= playlist.size()) {
-        std::cout << "🎵 Invalid track index" << std::endl;
+        std::cout << "\tInvalid track index" << std::endl;
         return;
     }
     const Track& track = playlist[currentTrackIndex];
@@ -104,10 +104,10 @@ void MediaPlayer::displayCurrentTrack() const {
     
     std::string stateStr;
     switch (state) {
-        case PlayerState::PLAYING: stateStr = "▶️  PLAYING"; break;
-        case PlayerState::PAUSED: stateStr = "⏸️  PAUSED"; break;
-        case PlayerState::STOPPED: stateStr = "⏹️  STOPPED"; break;
-        default: stateStr = "❓ UNKNOWN"; break;
+        case PlayerState::PLAYING: stateStr = "PLAYING"; break;
+        case PlayerState::PAUSED: stateStr = "PAUSED"; break;
+        case PlayerState::STOPPED: stateStr = "STOPPED"; break;
+        default: stateStr = "UNKNOWN"; break;
     }
     std::cout << "Status: " << stateStr << std::endl;
     std::cout << "Volume: " << volume << "%" << std::endl;
@@ -116,11 +116,11 @@ void MediaPlayer::displayCurrentTrack() const {
 
 void MediaPlayer::displayPlaylist() const {
     if (playlist.empty()) {
-        std::cout << "📝 Playlist is empty" << std::endl;
+        std::cout << "\tPlaylist is empty" << std::endl;
         return;
     }
     
-    std::cout << "\n📝 === PLAYLIST ===" << std::endl;
+    std::cout << "\n\t=== PLAYLIST ===" << std::endl;
     for (size_t i = 0; i < playlist.size(); ++i) {
         std::string indicator = (i == currentTrackIndex) ? "► " : "  ";
         std::cout << indicator << (i + 1) << ". " << playlist[i].title 
@@ -152,5 +152,5 @@ void MediaPlayer::loadDemoPlaylist() {
     addTrack(Track("Lose Yourself", "Eminem", "8 Mile", 326));
     
     currentTrackIndex = 0;
-    std::cout << "🎵 Demo playlist loaded with " << playlist.size() << " tracks" << std::endl;
+    std::cout << "\tDemo playlist loaded with " << playlist.size() << " tracks" << std::endl;
 }

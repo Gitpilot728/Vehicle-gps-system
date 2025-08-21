@@ -19,26 +19,25 @@ void NotificationManager::addNotification(const std::string& message, AlertLevel
     sanitizedMessage.erase(std::remove_if(sanitizedMessage.begin(), sanitizedMessage.end(),
                           [](char c) { return c < 32 && c != '\t' && c != '\n'; }), sanitizedMessage.end());
     
-    notifications.emplace_back(sanitizedMessage, level);
-    
+    notifications.emplace_back(sanitizedMessage, level);    
     // Immediate display for critical alerts
     if (level == AlertLevel::CRITICAL) {
-        std::cout << "\n🚨 CRITICAL ALERT: " << sanitizedMessage << std::endl;
+        std::cout << "\n\t\tCRITICAL ALERT: " << sanitizedMessage << std::endl;
         if (soundEnabled) {
-            std::cout << "🔊 *BEEP BEEP BEEP*" << std::endl;
+            std::cout << "\t*BEEP BEEP BEEP*" << std::endl;
         }
     } else if (level == AlertLevel::WARNING) {
-        std::cout << "\n⚠️  WARNING: " << sanitizedMessage << std::endl;
+        std::cout << "\n\tWARNING: " << sanitizedMessage << std::endl;
     }
 }
 
 void NotificationManager::displayNotifications() const {
     if (notifications.empty()) {
-        std::cout << "📋 No notifications." << std::endl;
+        std::cout << "\tNo notifications." << std::endl;
         return;
     }
     
-    std::cout << "\n📋 === NOTIFICATION CENTER ===" << std::endl;
+    std::cout << "\n\t=== NOTIFICATION CENTER ===" << std::endl;
     std::cout << std::string(40, '-') << std::endl;
     
     std::stringstream ss;
@@ -50,14 +49,13 @@ void NotificationManager::displayNotifications() const {
         
         std::string icon;
         switch (notification.level) {
-            case AlertLevel::INFO: icon = "ℹ️ "; break;
-            case AlertLevel::WARNING: icon = "⚠️ "; break;
-            case AlertLevel::CRITICAL: icon = "🚨"; break;
-            default: icon = "❓"; break;
+            case AlertLevel::INFO: icon = "INFO"; break;
+            case AlertLevel::WARNING: icon = "WARN"; break;
+            case AlertLevel::CRITICAL: icon = "CRIT"; break;
+            default: icon = "NOTE"; break;
         }
         
-        std::cout << "[" << ss.str() << "] " << icon << " "
-                  << alertLevelToString(notification.level) << ": "
+        std::cout << "[" << ss.str() << "] " << icon << ": "
                   << notification.message << std::endl;
     }
     std::cout << std::string(40, '-') << std::endl;
@@ -65,7 +63,7 @@ void NotificationManager::displayNotifications() const {
 
 void NotificationManager::clearNotifications() {
     notifications.clear();
-    std::cout << "🗑️  All notifications cleared." << std::endl;
+    std::cout << "\tAll notifications cleared." << std::endl;
 }
 
 int NotificationManager::getNotificationCount(AlertLevel level) const {
@@ -79,7 +77,7 @@ int NotificationManager::getNotificationCount() const {
 
 void NotificationManager::setSoundEnabled(bool enabled) {
     soundEnabled = enabled;
-    std::cout << "🔊 Notification sounds " << (enabled ? "enabled" : "disabled") << std::endl;
+    std::cout << "\tNotification sounds " << (enabled ? "enabled" : "disabled") << std::endl;
 }
 
 bool NotificationManager::hasCriticalAlerts() const {

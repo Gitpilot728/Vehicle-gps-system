@@ -4,14 +4,14 @@ A comprehensive C++ vehicle monitoring system with GPS navigation capabilities, 
 
 ## Features
 
-### 🚗 Vehicle Monitoring
+### Vehicle Monitoring
 - **Engine Temperature Monitoring**: Real-time temperature tracking with overheating alerts
 - **Fuel Level Management**: Fuel level monitoring with low fuel warnings and range estimation
 - **Speed Monitoring**: Current speed tracking with speed limit alerts
 - **Brake System Health**: Brake wear monitoring with maintenance alerts
 - **Real-time Updates**: Simulated sensor data updates for demonstration
 
-### 🛰️ GPS Navigation
+### GPS Navigation
 - **Location Tracking**: Precise GPS coordinate tracking with validation
 - **Route Planning**: Waypoint management and route calculation
 - **Distance Calculations**: Haversine formula for accurate distance measurements
@@ -19,19 +19,19 @@ A comprehensive C++ vehicle monitoring system with GPS navigation capabilities, 
 - **Signal Quality**: GPS signal strength and satellite count monitoring
 - **Turn-by-turn Guidance**: Bearing calculations and navigation assistance
 
-### 🎵 Media Player
+### Media Player
 - **Playlist Management**: Add and manage music tracks
 - **Playback Controls**: Play, pause, stop, next, and previous track functionality
 - **Volume Control**: Adjustable volume levels
 - **Track Information**: Display current track and playlist details
 
-### ⚙️ System Settings
+### System Settings
 - **Display Settings**: Theme selection (Light/Dark/Auto) and brightness control
 - **Audio Settings**: System volume and notification sound management
 - **Localization**: Multi-language support and regional settings
 - **User Preferences**: Customizable time format and temperature units
 
-### 🔔 Notification System
+### Notification System
 - **Alert Levels**: Info, Warning, and Critical alert classifications
 - **Real-time Notifications**: Instant alerts for system events
 - **Notification History**: View and manage notification history
